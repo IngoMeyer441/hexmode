@@ -14,6 +14,9 @@ let g:loaded_hexmode_plugin = 1
 " default auto hexmode file patterns
 let g:hexmode_patterns = get(g:, 'hexmode_patterns', '*.bin,*.exe,*.so,*.jpg,*.jpeg,*.gif,*.png,*.pdf,*.tiff')
 
+" auto detect binary files by default
+let g:hexmode_autodetect = get(g:, 'hexmode_autodetect', 1)
+
 " ex command for toggling hex mode - define mapping if desired
 command -bar Hexmode call ToggleHex()
 
@@ -70,6 +73,9 @@ function! s:IsBinary()
     " This match looks for characters that are not whitespace of various
     " sorts, printable ASCII, extended ASCII, and not Unicode.  Not great,
     " but fairly fast and fairly acceptable.
+    if !g:hexmode_autodetect
+        return 0
+    endif
     return !!search('[\x00-\x08\x0e-\x1f\x7f]', 'wn')
 endfunction
 
